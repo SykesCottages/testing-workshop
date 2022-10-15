@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+    php:
+        build: docker/php
+        volumes:
+            -   .:/app
+        working_dir: /app
+        env_file:
+            -   .env
+        depends_on:
+            www:
+                condition: service_started
+
+    fpm:
+        build: docker/fpm
+        volumes:
+            -   .:/app
+        working_dir: /app
+        env_file:
+            -   .env
+        depends_on:
+            migration:
+                condition: service_completed_successfully
+            composer:
+                condition: service_completed_successfully
+
+    www:
+        build: docker/www
+        volumes:
+            -   .:/app
+        depends_on:
+            fpm:
+                condition: service_started
+#        ports:
+#            -   "80:80"
+
+    db:
+        build: docker/mysql
+        healthcheck:
+            test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+            interval: 10s
+            timeout: 2s
+            retries: 10
+        env_file:
+            - .env
+
+    migration:
+        build: docker/migration
+        depends_on:
+            db:
+                condition: service_healthy
+        volumes:
+            - ./sql:/sql:cached
+        env_file:
+            - .env
+
+    composer:
+        build: docker/php
+        volumes:
+            - .:/app
+        working_dir: /app
+        command: composer install

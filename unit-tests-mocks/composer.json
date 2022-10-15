@@ -1,0 +1,12 @@
+{
+    "name": "sykescottages/testing-workshop",
+    "autoload": {
+        "psr-4": {
+            "SykesCottages\\TestingWorkshop\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "mockery/mockery": "^1.5"
+    }
+}
