@@ -56,6 +56,46 @@ The code already exists, so write some code to prove that the code does what it'
 
 ### Notes
 Code integrates with MySQL and we have provided a `DatabaseTestCase` class to truncate and seed data for testing.
+There are two functions available; 
+- the first is `truncateTable` to help clear a database table 
+- the other is `runSeedData` which runs requires you to overload the `seedData` function and return the following structure:
+```php
+[
+    'TABLE_NAME' => [
+        'COLUMN_1' => 'VALUE_1',
+        'COLUMN_2' => 'VALUE_2'
+    ]
+]
+```
+
+#### Example Setup
+```php
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->truncateTable('customers');
+        $this->runSeedData();
+    }
+
+    public function tearDown(): void
+    {
+        $this->truncateTable('customers');
+    }
+
+    public function seedData(): array
+    {
+        return [
+            'customers' => [
+                [
+                    'customer_id' => 1,
+                    'customer_forename' => 'test',
+                    'customer_surname' => 'test',
+                    'customer_email' => 'test1@example.com'
+                ]
+            ]
+        ];
+    }
+```
 
 ## 4. End-to-End Tests
 
