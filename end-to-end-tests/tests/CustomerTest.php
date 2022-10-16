@@ -37,7 +37,7 @@ class CustomerTest extends DatabaseTestCase
         return [
             'customers' => [
                 [
-                    'customer_id' => 1,
+                    'customer_id' => '1',
                     'customer_forename' => 'test',
                     'customer_surname' => 'test',
                     'customer_email' => 'test1@example.com'
@@ -97,6 +97,5 @@ class CustomerTest extends DatabaseTestCase
             "Test",
             "invalid-email-address"
         );
-
     }
 }

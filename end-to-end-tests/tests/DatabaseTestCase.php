@@ -54,8 +54,16 @@ abstract class DatabaseTestCase extends TestCase
         {
             foreach($data as $row) {
                 $columnNames = implode('`, `', array_keys($row));
-                $values = implode('", "', array_values($row));
-                $query = "INSERT INTO ${tableName} (`${columnNames}`) VALUES (\"${values}\");";
+
+                $values = implode('", "', array_map(
+                        function (string $value): string {
+                            return $this->database->real_escape_string($value);
+                        },
+                        array_values($row)
+                    )
+                );
+
+                $query = "INSERT INTO `${tableName}` (`${columnNames}`) VALUES (\"${values}\");";
                 $this->database->query($query);
             }
         }
