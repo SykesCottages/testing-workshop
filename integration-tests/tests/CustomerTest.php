@@ -4,13 +4,18 @@ namespace SykesCottages\Tests;
 
 use DI\Container;
 use DI\ContainerBuilder;
+use DI\DependencyException;
+use DI\NotFoundException;
 use PHPUnit\Framework\TestCase;
+use SykesCottages\TestingWorkshop\CustomerDoesNotExistException;
 use SykesCottages\TestingWorkshop\InvalidCustomerException;
 
 class CustomerTest extends DatabaseTestCase
 {
     /**
      * @return void
+     * @throws DependencyException
+     * @throws NotFoundException
      */
     public function setUp(): void
     {
@@ -35,7 +40,7 @@ class CustomerTest extends DatabaseTestCase
         return [
             'customers' => [
                 [
-                    'customer_id' => 1,
+                    'customer_id' => '1',
                     'customer_forename' => 'test',
                     'customer_surname' => 'test',
                     'customer_email' => 'test1@example.com'
@@ -46,6 +51,10 @@ class CustomerTest extends DatabaseTestCase
 
     /**
      * @return void
+     * @throws DependencyException
+     * @throws InvalidCustomerException
+     * @throws NotFoundException
+     * @throws CustomerDoesNotExistException
      */
     public function testGetCustomerRecord(): void
     {
@@ -58,6 +67,9 @@ class CustomerTest extends DatabaseTestCase
 
     /**
      * @return void
+     * @throws DependencyException
+     * @throws InvalidCustomerException
+     * @throws NotFoundException
      */
     public function testCustomerCreationWithValidCredentials(): void
     {
@@ -74,6 +86,9 @@ class CustomerTest extends DatabaseTestCase
 
     /**
      * @return void
+     * @throws DependencyException
+     * @throws InvalidCustomerException
+     * @throws NotFoundException
      */
     public function testThatAnExceptionIsThrownWithInvalidDetailsPassed(): void
     {
