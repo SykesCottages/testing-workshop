@@ -62,8 +62,10 @@ There are two functions available;
 ```php
 [
     'TABLE_NAME' => [
-        'COLUMN_1' => 'VALUE_1',
-        'COLUMN_2' => 'VALUE_2'
+        [
+            'COLUMN_1' => 'VALUE_1',
+            'COLUMN_2' => 'VALUE_2'
+        ]
     ]
 ]
 ```
